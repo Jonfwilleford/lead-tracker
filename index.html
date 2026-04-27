@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lead Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <h1>&#127795; Lead Tracker</h1>
+      <button id="addBtn">+ Add Lead</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="board">
+      <div class="column" data-status="New">
+        <div class="col-header">
+          <span class="col-title">New</span>
+          <span class="col-count" id="count-New">0</span>
+        </div>
+        <div class="cards" id="col-New"></div>
+      </div>
+
+      <div class="column" data-status="Contacted">
+        <div class="col-header">
+          <span class="col-title">Contacted</span>
+          <span class="col-count" id="count-Contacted">0</span>
+        </div>
+        <div class="cards" id="col-Contacted"></div>
+      </div>
+
+      <div class="column" data-status="Proposal Sent">
+        <div class="col-header">
+          <span class="col-title">Proposal Sent</span>
+          <span class="col-count" id="count-Proposal-Sent">0</span>
+        </div>
+        <div class="cards" id="col-Proposal-Sent"></div>
+      </div>
+
+      <div class="column" data-status="Closed">
+        <div class="col-header">
+          <span class="col-title">Closed</span>
+          <span class="col-count" id="count-Closed">0</span>
+        </div>
+        <div class="cards" id="col-Closed"></div>
+      </div>
+    </div>
+  </main>
+
+  <dialog id="leadModal">
+    <form id="leadForm">
+      <div class="modal-header">
+        <h2 id="modalTitle">Add Lead</h2>
+        <button type="button" id="closeModal" class="close-btn">&times;</button>
+      </div>
+
+      <input type="hidden" id="leadId" />
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="leadName">Name <span class="required">*</span></label>
+          <input type="text" id="leadName" placeholder="Full name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="leadCompany">Company</label>
+          <input type="text" id="leadCompany" placeholder="Business name" />
+        </div>
+
+        <div class="form-group">
+          <label for="leadEmail">Email</label>
+          <input type="email" id="leadEmail" placeholder="email@example.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="leadPhone">Phone</label>
+          <input type="tel" id="leadPhone" placeholder="(555) 000-0000" />
+        </div>
+
+        <div class="form-group">
+          <label for="leadStatus">Status</label>
+          <select id="leadStatus">
+            <option value="New">New</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Proposal Sent">Proposal Sent</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="leadValue">Project Value ($)</label>
+          <input type="number" id="leadValue" placeholder="0" min="0" step="50" />
+        </div>
+
+        <div class="form-group">
+          <label for="leadSource">Source</label>
+          <input type="text" id="leadSource" placeholder="Referral, LinkedIn, etc." />
+        </div>
+
+        <div class="form-group">
+          <label for="leadDate">Date</label>
+          <input type="date" id="leadDate" />
+        </div>
+
+        <div class="form-group full-width">
+          <label for="leadNotes">Notes</label>
+          <textarea id="leadNotes" rows="3" placeholder="Project details, follow-up info..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" id="cancelBtn" class="btn-secondary">Cancel</button>
+        <button type="submit" class="btn-primary">Save Lead</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="main.js"></script>
+</body>
+</html>
