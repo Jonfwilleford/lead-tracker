@@ -150,12 +150,18 @@ main {
   border: 1px solid rgba(201, 168, 76, 0.12);
   border-radius: var(--radius);
   padding: 0.9rem 1rem;
+  cursor: pointer;
   transition: border-color var(--transition), transform var(--transition);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .card:hover {
   border-color: var(--gold);
   transform: translateY(-2px);
+}
+
+.card:active {
+  transform: translateY(0);
 }
 
 .card-name {
@@ -189,49 +195,7 @@ main {
   font-weight: 300;
   color: var(--cream-dim);
   letter-spacing: 0.03em;
-  margin-bottom: 0.65rem;
   opacity: 0.8;
-}
-
-.card-actions {
-  display: flex;
-  gap: 0.5rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid rgba(201, 168, 76, 0.1);
-}
-
-.card-actions button {
-  font-family: var(--font-sans);
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.65rem;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: background var(--transition), color var(--transition), border-color var(--transition);
-}
-
-.btn-edit {
-  background: transparent;
-  color: var(--cream-dim);
-  border: 1px solid rgba(184, 173, 150, 0.3);
-}
-
-.btn-edit:hover {
-  border-color: var(--cream-dim);
-  color: var(--cream);
-}
-
-.btn-delete {
-  background: transparent;
-  color: rgba(184, 173, 150, 0.5);
-  border: 1px solid rgba(184, 173, 150, 0.15);
-}
-
-.btn-delete:hover {
-  color: #c47a7a;
-  border-color: rgba(196, 122, 122, 0.4);
 }
 
 /* ── Modal ───────────────────────────────────────────────────── */
@@ -420,6 +384,126 @@ main {
   user-select: none;
 }
 
+/* ── Contact modal ───────────────────────────────────────────── */
+
+#contactModal {
+  background: var(--pine-base);
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  border-radius: var(--radius);
+  padding: 0;
+  width: 92%;
+  max-width: 360px;
+  color: var(--cream);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+#contactModal::backdrop {
+  background: rgba(10, 14, 8, 0.8);
+}
+
+.contact-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.25rem 1.4rem 1rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.contact-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.contact-name {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--cream);
+}
+
+.contact-company {
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: var(--cream-dim);
+  letter-spacing: 0.05em;
+}
+
+.contact-status-badge {
+  margin-top: 0.35rem;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  border-radius: 2px;
+  padding: 0.15rem 0.5rem;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.contact-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.1rem 1.4rem;
+}
+
+.contact-action {
+  flex: 1;
+  display: block;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 0.7rem 0.5rem;
+  border-radius: var(--radius);
+  transition: background var(--transition), color var(--transition);
+}
+
+.contact-action:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.contact-action.disabled {
+  color: rgba(184, 173, 150, 0.25);
+  border-color: rgba(184, 173, 150, 0.15);
+  pointer-events: none;
+}
+
+.contact-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1.4rem;
+  border-top: 1px solid rgba(201, 168, 76, 0.12);
+}
+
+.btn-danger {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(184, 173, 150, 0.45);
+  background: transparent;
+  border: none;
+  padding: 0.4rem 0;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+
+.btn-danger:hover {
+  color: #c47a7a;
+}
+
 /* ── Mobile ──────────────────────────────────────────────────── */
 
 @media (max-width: 860px) {
@@ -432,6 +516,24 @@ main {
   }
 
   .column { min-width: unset; width: 100%; }
+
+  #contactModal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 12px 12px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  #contactModal::backdrop {
+    background: rgba(10, 14, 8, 0.75);
+  }
 }
 
 @media (max-width: 480px) {

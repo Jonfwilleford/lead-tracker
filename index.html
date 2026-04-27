@@ -54,6 +54,25 @@
     </div>
   </main>
 
+  <dialog id="contactModal">
+    <div class="contact-header">
+      <div class="contact-identity">
+        <p id="contactName" class="contact-name"></p>
+        <p id="contactCompany" class="contact-company"></p>
+        <p id="contactStatus" class="contact-status-badge"></p>
+      </div>
+      <button type="button" id="closeContact" class="close-btn">&times;</button>
+    </div>
+    <div class="contact-actions">
+      <a id="contactCallBtn"  class="contact-action" href="#">Call</a>
+      <a id="contactEmailBtn" class="contact-action" href="#">Email</a>
+    </div>
+    <div class="contact-footer">
+      <button id="contactEditBtn"   class="btn-secondary">Edit Lead</button>
+      <button id="contactDeleteBtn" class="btn-danger">Delete</button>
+    </div>
+  </dialog>
+
   <dialog id="leadModal">
     <form id="leadForm">
       <div class="modal-header">

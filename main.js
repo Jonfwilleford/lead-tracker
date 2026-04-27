@@ -10,12 +10,23 @@ const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const STATUSES = ['New', 'Contacted', 'Proposal Sent', 'Closed'];
 
 // ── DOM refs ─────────────────────────────────────────────────────
-const modal     = document.getElementById('leadModal');
-const leadForm  = document.getElementById('leadForm');
-const modalTitle = document.getElementById('modalTitle');
-const addBtn    = document.getElementById('addBtn');
-const closeBtn  = document.getElementById('closeModal');
-const cancelBtn = document.getElementById('cancelBtn');
+const modal        = document.getElementById('leadModal');
+const leadForm     = document.getElementById('leadForm');
+const modalTitle   = document.getElementById('modalTitle');
+const addBtn       = document.getElementById('addBtn');
+const closeBtn     = document.getElementById('closeModal');
+const cancelBtn    = document.getElementById('cancelBtn');
+
+const contactModal      = document.getElementById('contactModal');
+const contactName       = document.getElementById('contactName');
+const contactCompany    = document.getElementById('contactCompany');
+const contactStatus     = document.getElementById('contactStatus');
+const contactCallBtn    = document.getElementById('contactCallBtn');
+const contactEmailBtn   = document.getElementById('contactEmailBtn');
+const contactEditBtn    = document.getElementById('contactEditBtn');
+const contactDeleteBtn  = document.getElementById('contactDeleteBtn');
+
+let activeLead = null;
 
 // ── Data ─────────────────────────────────────────────────────────
 async function fetchLeads() {
@@ -75,10 +86,6 @@ function renderCard(lead) {
     ${lead.company ? `<div class="card-company">${escHtml(lead.company)}</div>` : ''}
     ${value ? `<div class="card-value">${value}</div>` : ''}
     ${meta ? `<div class="card-meta">${escHtml(meta)}</div>` : ''}
-    <div class="card-actions">
-      <button class="btn-edit" data-action="edit">Edit</button>
-      <button class="btn-delete" data-action="delete">Delete</button>
-    </div>
   `;
   return card;
 }
@@ -130,6 +137,53 @@ function closeModal() {
   modal.close();
 }
 
+// ── Contact modal ─────────────────────────────────────────────────
+function openContactModal(lead) {
+  activeLead = lead;
+
+  contactName.textContent    = lead.name;
+  contactCompany.textContent = lead.company || '';
+  contactStatus.textContent  = lead.status || '';
+
+  if (lead.phone) {
+    contactCallBtn.href = 'tel:' + lead.phone.replace(/\D/g, '');
+    contactCallBtn.classList.remove('disabled');
+  } else {
+    contactCallBtn.href = '#';
+    contactCallBtn.classList.add('disabled');
+  }
+
+  if (lead.email) {
+    contactEmailBtn.href = 'mailto:' + lead.email;
+    contactEmailBtn.classList.remove('disabled');
+  } else {
+    contactEmailBtn.href = '#';
+    contactEmailBtn.classList.add('disabled');
+  }
+
+  contactModal.showModal();
+}
+
+function closeContactModal() {
+  contactModal.close();
+  activeLead = null;
+}
+
+document.getElementById('closeContact').addEventListener('click', closeContactModal);
+contactModal.addEventListener('click', e => { if (e.target === contactModal) closeContactModal(); });
+
+contactEditBtn.addEventListener('click', () => {
+  const lead = activeLead;
+  closeContactModal();
+  openModal(lead);
+});
+
+contactDeleteBtn.addEventListener('click', async () => {
+  if (!confirm('Delete this lead?')) return;
+  const ok = await deleteLead(activeLead.id);
+  if (ok) { closeContactModal(); renderKanban(); }
+});
+
 // ── Events ───────────────────────────────────────────────────────
 addBtn.addEventListener('click', () => openModal());
 closeBtn.addEventListener('click', closeModal);
@@ -162,23 +216,13 @@ leadForm.addEventListener('submit', async e => {
 });
 
 document.getElementById('board').addEventListener('click', async e => {
-  const btn = e.target.closest('[data-action]');
-  if (!btn) return;
+  const card = e.target.closest('.card');
+  if (!card) return;
 
-  const card = btn.closest('.card');
-  const id   = card.dataset.id;
-
-  if (btn.dataset.action === 'delete') {
-    if (!confirm('Delete this lead?')) return;
-    const ok = await deleteLead(id);
-    if (ok) renderKanban();
-  }
-
-  if (btn.dataset.action === 'edit') {
-    const { data, error } = await db.from('leads').select('*').eq('id', id).single();
-    if (error) { alert('Could not load lead.'); return; }
-    openModal(data);
-  }
+  const id = card.dataset.id;
+  const { data, error } = await db.from('leads').select('*').eq('id', id).single();
+  if (error) { alert('Could not load lead.'); return; }
+  openContactModal(data);
 });
 
 // ── Utility ──────────────────────────────────────────────────────
