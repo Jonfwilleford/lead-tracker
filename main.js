@@ -1,8 +1,8 @@
 // ── Supabase config ──────────────────────────────────────────────
 // 1. Go to supabase.com → your project → Settings → API
 // 2. Copy "Project URL" and "anon public" key and paste below
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'https://gpejigcqpuikzrpntklj.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_HLt2_8b6Hwru8FdMxlOyiQ_hOLMGPT7';
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
